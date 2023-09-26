@@ -49,4 +49,6 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private List<Comment> commentList;
+
+    private String category;
 }

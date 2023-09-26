@@ -1,8 +1,13 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
 	<div class="row my-3">
-        <div class="col-6">
+        <div class="col-2">
             <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+        </div>
+        <div class="col-4">
+            <a th:href="@{/question/list/spring}" class="btn btn-secondary">spring</a>
+            <a th:href="@{/question/list/python}" class="btn btn-secondary">python</a>
+            <a th:href="@{/question/list/java}" class="btn btn-secondary">java</a>
         </div>
         <div class="col-6">
             <div class="input-group">
@@ -15,6 +20,7 @@
         <thead class="table-dark">
             <tr class="text-center">
 			    <th>번호</th>
+                <th>카테고리</th>
 			    <th style="width:50%">제목</th>
 			    <th>글쓴이</th>
 			    <th>작성일시</th>
@@ -23,6 +29,7 @@
         <tbody>
             <tr class="text-center" th:each="question, loop : ${paging}">
 			    <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
+                <td th:text="${question.category}"></td>
 			    <td class="text-start">
 			        <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
 			        <span class="text-danger small ms-2" th:if="${#lists.size(question.answerList) > 0}"

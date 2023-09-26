@@ -41,6 +41,16 @@ public class QuestionController {
         model.addAttribute("kw", kw);
         return "question_list";
     }
+
+    @GetMapping("/list/{category}")
+    public String list(Model model, @PathVariable("category") String category,
+                       @RequestParam(value="page", defaultValue="0") int page,
+                       @RequestParam(value = "kw", defaultValue = "") String kw) {
+        Page<Question> paging = this.questionService.getCategoryList(page, category);
+        model.addAttribute("paging", paging);
+        model.addAttribute("kw", kw);
+        return "question_list";
+    }
     
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm,
@@ -66,7 +76,7 @@ public class QuestionController {
             return "question_form";
         }
         SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser);
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), questionForm.getCategory(), siteUser);
         return "redirect:/question/list";
     }
     

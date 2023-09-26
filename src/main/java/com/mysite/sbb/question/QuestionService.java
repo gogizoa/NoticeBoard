@@ -56,6 +56,13 @@ public class QuestionService {
         return this.questionRepository.findAll(spec, pageable);
 //        return this.questionRepository.findAllByKeyword(kw, pageable);
     }
+
+    public Page<Question> getCategoryList(int page, String category) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return this.questionRepository.findAllByCategory(category, pageable);
+    }
     
     public Question getQuestion(Integer id) {  
         Optional<Question> question = this.questionRepository.findById(id);
@@ -66,10 +73,11 @@ public class QuestionService {
         }
     }
     
-    public void create(String subject, String content, SiteUser user) {
+    public void create(String subject, String content, String category, SiteUser user) {
         Question q = new Question();
         q.setSubject(subject);
         q.setContent(content);
+        q.setCategory(category);
         q.setCreateDate(LocalDateTime.now());
         q.setAuthor(user);
         this.questionRepository.save(q);
